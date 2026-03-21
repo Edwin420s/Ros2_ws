@@ -1,0 +1,42 @@
+services:
+  ros_base:
+    image: custom_ros_humble
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
+    volumes:
+      - .:/root/ros2_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    network_mode: "host"
+    ipc: "host"
+    pid: "host"
+    command: bash -c "colcon build --packages-select my_robot && source install/setup.bash && ros2 launch my_robot rsp.launch.py"
+
+  rviz2:
+    image: custom_ros_humble
+    depends_on:
+      - ros_base
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
+    volumes:
+      - .:/root/ros2_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    network_mode: "host"
+    ipc: "host"
+    pid: "host"
+    command: bash -c "source install/setup.bash && sleep 3 && rviz2 -d /root/ros2_ws/install/my_robot/share/my_robot/rviz/urdf_config.rviz"
+
+  walker:
+    image: custom_ros_humble
+    depends_on:
+      - ros_base
+    volumes:
+      - .:/root/ros2_ws
+    network_mode: "host"
+    ipc: "host"
+    pid: "host"
+    command: bash -c "source install/setup.bash && sleep 5 && ros2 run my_robot walker.py"

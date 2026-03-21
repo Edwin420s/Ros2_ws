@@ -1,0 +1,36 @@
+[0.000000] (-) TimerEvent: {}
+[0.000478] (my_robot) JobQueued: {'identifier': 'my_robot', 'dependencies': OrderedDict()}
+[0.000730] (my_robot) JobStarted: {'identifier': 'my_robot'}
+[0.015941] (my_robot) JobProgress: {'identifier': 'my_robot', 'progress': 'cmake'}
+[0.017169] (my_robot) JobProgress: {'identifier': 'my_robot', 'progress': 'build'}
+[0.018002] (my_robot) Command: {'cmd': ['/usr/bin/cmake', '--build', '/root/ros2_ws/build/my_robot', '--', '-j8', '-l8'], 'cwd': '/root/ros2_ws/build/my_robot', 'env': OrderedDict([('HOSTNAME', 'fedora'), ('SHLVL', '1'), ('LIBGL_ALWAYS_SOFTWARE', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/root'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('QT_X11_NO_MITSHM', '1'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('PWD', '/root/ros2_ws/build/my_robot'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.099520] (-) TimerEvent: {}
+[0.131395] (my_robot) CommandEnded: {'returncode': 0}
+[0.134542] (my_robot) JobProgress: {'identifier': 'my_robot', 'progress': 'install'}
+[0.143182] (my_robot) Command: {'cmd': ['/usr/bin/cmake', '--install', '/root/ros2_ws/build/my_robot'], 'cwd': '/root/ros2_ws/build/my_robot', 'env': OrderedDict([('HOSTNAME', 'fedora'), ('SHLVL', '1'), ('LIBGL_ALWAYS_SOFTWARE', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/root'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('QT_X11_NO_MITSHM', '1'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('PWD', '/root/ros2_ws/build/my_robot'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.152332] (my_robot) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[0.152911] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/urdf\n'}
+[0.153569] (my_robot) StdoutLine: {'line': b'-- Installing: /root/ros2_ws/install/my_robot/share/my_robot/urdf/my_robot.urdf\n'}
+[0.153982] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/launch\n'}
+[0.154128] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/launch/rsp.launch.py\n'}
+[0.154258] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/rviz\n'}
+[0.154401] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/rviz/urdf_config.rviz\n'}
+[0.154522] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/lib/my_robot/walker.py\n'}
+[0.154637] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/ament_index/resource_index/package_run_dependencies/my_robot\n'}
+[0.154751] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/ament_index/resource_index/parent_prefix_path/my_robot\n'}
+[0.154863] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/environment/ament_prefix_path.sh\n'}
+[0.154975] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/environment/ament_prefix_path.dsv\n'}
+[0.155085] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/environment/path.sh\n'}
+[0.155214] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/environment/path.dsv\n'}
+[0.155338] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/local_setup.bash\n'}
+[0.155462] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/local_setup.sh\n'}
+[0.155720] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/local_setup.zsh\n'}
+[0.156447] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/local_setup.dsv\n'}
+[0.156578] (my_robot) StdoutLine: {'line': b'-- Installing: /root/ros2_ws/install/my_robot/share/my_robot/package.dsv\n'}
+[0.156765] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/ament_index/resource_index/packages/my_robot\n'}
+[0.156895] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/cmake/my_robotConfig.cmake\n'}
+[0.157074] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/cmake/my_robotConfig-version.cmake\n'}
+[0.157193] (my_robot) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/my_robot/share/my_robot/package.xml\n'}
+[0.157302] (my_robot) CommandEnded: {'returncode': 0}
+[0.183974] (my_robot) JobEnded: {'identifier': 'my_robot', 'rc': 0}
+[0.184609] (-) EventReactorShutdown: {}
