@@ -8,7 +8,6 @@ Panels:
         - /RobotModel1
         - /TF1
         - /LaserScan1
-        - /Odometry1
       Splitter Ratio: 0.5
     Tree Height: 620
 Visualization Manager:
@@ -41,21 +40,17 @@ Visualization Manager:
     - Class: rviz_default_plugins/TF
       Enabled: true
       Name: TF
-      Marker Scale: 0.5
+      Marker Scale: 0.4
       Show Arrows: true
       Show Axes: true
-      Show Names: true
-      Update Interval: 0
+      Show Names: false
 
     # ── LiDAR scan ────────────────────────────────────────────────────────────
     - Alpha: 1
-      Autocompute Intensity Bounds: true
       Class: rviz_default_plugins/LaserScan
-      Color: 255; 60; 0
+      Color: 255; 80; 0
       Color Transformer: Intensity
       Enabled: true
-      Max Color: 255; 255; 255
-      Min Color: 255; 60; 0
       Name: LaserScan
       Size (m): 0.06
       Style: Spheres
@@ -66,20 +61,20 @@ Visualization Manager:
         Reliability Policy: Best Effort
         Value: /scan
 
-    # ── Odometry arrows ───────────────────────────────────────────────────────
+    # ── Odometry (Keep:1 = no smoke trail, just current arrow) ───────────────
     - Class: rviz_default_plugins/Odometry
       Covariance:
         Enabled: false
-      Enabled: true
-      Keep: 50
+      Enabled: false
+      Keep: 1
       Name: Odometry
       Shape:
-        Alpha: 0.8
-        Color: 0; 200; 50
-        Head Length: 0.2
-        Head Radius: 0.08
-        Shaft Length: 0.5
-        Shaft Radius: 0.03
+        Alpha: 0.9
+        Color: 0; 220; 60
+        Head Length: 0.3
+        Head Radius: 0.1
+        Shaft Length: 0.6
+        Shaft Radius: 0.04
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -87,7 +82,7 @@ Visualization Manager:
         Reliability Policy: Best Effort
         Value: /odom
 
-    # ── World axes (always visible, no topic subscription needed) ────────────
+    # ── World origin axes ─────────────────────────────────────────────────────
     - Class: rviz_default_plugins/Axes
       Enabled: true
       Length: 1.0

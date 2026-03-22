@@ -1,0 +1,4 @@
+Invoking command in '/root/ros2_ws/build/my_robot': /usr/bin/cmake --build /root/ros2_ws/build/my_robot -- -j8 -l8
+Invoked command in '/root/ros2_ws/build/my_robot' returned '0': /usr/bin/cmake --build /root/ros2_ws/build/my_robot -- -j8 -l8
+Invoking command in '/root/ros2_ws/build/my_robot': /usr/bin/cmake --install /root/ros2_ws/build/my_robot
+Invoked command in '/root/ros2_ws/build/my_robot' returned '0': /usr/bin/cmake --install /root/ros2_ws/build/my_robot

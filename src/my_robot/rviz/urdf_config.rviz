@@ -1,0 +1,115 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /RobotModel1
+        - /TF1
+        - /LaserScan1
+      Splitter Ratio: 0.5
+    Tree Height: 620
+Visualization Manager:
+  Class: ""
+  Displays:
+    # ── Ground grid ──────────────────────────────────────────────────────────
+    - Alpha: 0.4
+      Cell Size: 1
+      Class: rviz_default_plugins/Grid
+      Color: 100; 100; 120
+      Enabled: true
+      Name: Grid
+      Plane: XY
+      Plane Cell Count: 20
+
+    # ── Robot model ───────────────────────────────────────────────────────────
+    - Alpha: 1
+      Class: rviz_default_plugins/RobotModel
+      Description Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      Enabled: true
+      Name: RobotModel
+      Visual Enabled: true
+
+    # ── TF frames ─────────────────────────────────────────────────────────────
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Name: TF
+      Marker Scale: 0.4
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+
+    # ── LiDAR scan ────────────────────────────────────────────────────────────
+    - Alpha: 1
+      Class: rviz_default_plugins/LaserScan
+      Color: 255; 80; 0
+      Color Transformer: Intensity
+      Enabled: true
+      Name: LaserScan
+      Size (m): 0.06
+      Style: Spheres
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /scan
+
+    # ── Odometry (Keep:1 = no smoke trail, just current arrow) ───────────────
+    - Class: rviz_default_plugins/Odometry
+      Covariance:
+        Enabled: false
+      Enabled: false
+      Keep: 1
+      Name: Odometry
+      Shape:
+        Alpha: 0.9
+        Color: 0; 220; 60
+        Head Length: 0.3
+        Head Radius: 0.1
+        Shaft Length: 0.6
+        Shaft Radius: 0.04
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /odom
+
+    # ── World origin axes ─────────────────────────────────────────────────────
+    - Class: rviz_default_plugins/Axes
+      Enabled: true
+      Length: 1.0
+      Name: WorldAxes
+      Radius: 0.05
+
+  Enabled: true
+  Global Options:
+    Background Color: 20; 20; 35
+    Fixed Frame: odom
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+    - Class: rviz_default_plugins/SetInitialPose
+    - Class: rviz_default_plugins/SetGoal
+    - Class: rviz_default_plugins/PublishPoint
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 900
+  Hide Left Dock: false
+  Hide Right Dock: false
+  Width: 1400
+  X: 0
+  Y: 0

@@ -155,8 +155,8 @@
     <parent link="base_link"/>
     <child link="front_left_wheel"/>
     <origin xyz="1.0 1.2 -0.45" rpy="1.5708 0 0"/>
-    <axis xyz="0 0 1"/>
-    <dynamics damping="0.5" friction="0.3"/>
+    <axis xyz="0 0 1"/><!-- rolling axis in joint frame = world Y after rpy -->
+    <dynamics damping="0.4" friction="0.25"/>
   </joint>
 
   <!-- Front Right -->
@@ -176,9 +176,9 @@
   <joint name="fr_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="front_right_wheel"/>
-    <origin xyz="1.0 -1.2 -0.45" rpy="1.5708 0 0"/>
-    <axis xyz="0 0 1"/>
-    <dynamics damping="0.5" friction="0.3"/>
+    <origin xyz="1.0 -1.2 -0.45" rpy="-1.5708 0 0"/>
+    <axis xyz="0 0 1"/><!-- mirrored rpy for right side so it rolls same direction -->
+    <dynamics damping="0.4" friction="0.25"/>
   </joint>
 
   <!-- Rear Left -->
@@ -200,7 +200,7 @@
     <child link="rear_left_wheel"/>
     <origin xyz="-1.0 1.2 -0.45" rpy="1.5708 0 0"/>
     <axis xyz="0 0 1"/>
-    <dynamics damping="0.5" friction="0.3"/>
+    <dynamics damping="0.5" friction="0.35"/>
   </joint>
 
   <!-- Rear Right -->
@@ -220,9 +220,9 @@
   <joint name="rr_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="rear_right_wheel"/>
-    <origin xyz="-1.0 -1.2 -0.45" rpy="1.5708 0 0"/>
+    <origin xyz="-1.0 -1.2 -0.45" rpy="-1.5708 0 0"/>
     <axis xyz="0 0 1"/>
-    <dynamics damping="0.5" friction="0.3"/>
+    <dynamics damping="0.5" friction="0.35"/>
   </joint>
 
   <!-- ================= ROBOTIC ARM ================= -->
