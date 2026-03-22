@@ -1,154 +1,244 @@
 #!/usr/bin/env python3
+"""
+sensor_simulator.py — Realistic sensor data for ECE2318 robot.
+
+Publishes:
+  /scan          — sensor_msgs/LaserScan   (360° LiDAR, 1° res)
+  /imu           — sensor_msgs/Imu         (accel + angular vel from cmd_vel)
+  /detected_object — geometry_msgs/Point   (objects within 2.5 m)
+
+Tracks real robot position via /odom subscription.
+"""
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import LaserScan, PointCloud
-from geometry_msgs.msg import Point32, Point
+from sensor_msgs.msg import LaserScan, Imu
+from geometry_msgs.msg import Point, Twist, Vector3
+from nav_msgs.msg import Odometry
 import math
 import random
+
 
 class SensorSimulatorNode(Node):
     def __init__(self):
         super().__init__('sensor_simulator')
-        
-        # LIDAR publisher
-        self.lidar_pub = self.create_publisher(LaserScan, '/scan', 10)
-        
-        # Object detection publisher
-        self.object_pub = self.create_publisher(Point, '/detected_object', 10)
-        
-        # Simulated objects in the environment (x, y, z, size)
-        self.objects = [
-            {'pos': [2.0, 1.0, 0.5], 'size': 0.2, 'detected': False},
-            {'pos': [-1.5, 2.0, 0.3], 'size': 0.15, 'detected': False},
-            {'pos': [3.0, -1.0, 0.4], 'size': 0.25, 'detected': False},
-            {'pos': [0.5, -2.5, 0.6], 'size': 0.18, 'detected': False},
+
+        # ── Publishers ─────────────────────────────────────────────────────
+        self.lidar_pub  = self.create_publisher(LaserScan, '/scan',             10)
+        self.imu_pub    = self.create_publisher(Imu,       '/imu',              10)
+        self.object_pub = self.create_publisher(Point,     '/detected_object',  10)
+
+        # ── Subscribers ────────────────────────────────────────────────────
+        self.create_subscription(Odometry, '/odom',    self.odom_cb,    10)
+        self.create_subscription(Twist,    '/cmd_vel', self.cmd_vel_cb, 10)
+
+        # ── Simulated objects: (x, y, z, radius) ─────────────────────────
+        self.scene_objects = [
+            {'pos': [3.0,  1.5,  0.5], 'r': 0.25, 'detected': False, 'id': 0},
+            {'pos': [-2.0, 2.5,  0.4], 'r': 0.20, 'detected': False, 'id': 1},
+            {'pos': [4.5, -1.0,  0.6], 'r': 0.30, 'detected': False, 'id': 2},
+            {'pos': [1.0, -3.0,  0.3], 'r': 0.18, 'detected': False, 'id': 3},
+            {'pos': [-3.5, -2.0, 0.5], 'r': 0.22, 'detected': False, 'id': 4},
         ]
-        
-        # Robot position (will be updated by odometry)
-        self.robot_x = 0.0
-        self.robot_y = 0.0
-        self.robot_theta = 0.0
-        
-        # Timer for sensor updates
-        self.timer = self.create_timer(0.1, self.update_sensors)  # 10 Hz
-        
-        self.get_logger().info('Sensor Simulator Node Started')
-    
-    def update_sensors(self):
-        """Update LIDAR scan and object detection"""
-        self.publish_lidar_scan()
-        self.detect_objects()
-    
-    def publish_lidar_scan(self):
-        """Publish simulated LIDAR scan data"""
+
+        # Simulated walls / obstacles (just large cylinder obstacles)
+        self.walls = [
+            {'pos': [ 5.0,  0.0], 'r': 0.5},
+            {'pos': [-5.0,  0.0], 'r': 0.5},
+            {'pos': [ 0.0,  5.0], 'r': 0.5},
+            {'pos': [ 0.0, -5.0], 'r': 0.5},
+        ]
+
+        # ── Robot state ───────────────────────────────────────────────────
+        self.robot_x      = 0.0
+        self.robot_y      = 0.0
+        self.robot_theta  = 0.0
+        self.vx           = 0.0
+        self.vtheta       = 0.0
+
+        # For IMU integration
+        self.prev_vx     = 0.0
+        self.prev_vtheta = 0.0
+        self.last_imu_t  = self.get_clock().now()
+
+        # ── 10 Hz sensor tick ──────────────────────────────────────────────
+        self.create_timer(0.1, self.sensor_tick)
+        self.get_logger().info('📡 Sensor simulator started (LiDAR + IMU + Object detection)')
+
+    # ── Callbacks ─────────────────────────────────────────────────────────────
+    def odom_cb(self, msg: Odometry):
+        self.robot_x = msg.pose.pose.position.x
+        self.robot_y = msg.pose.pose.position.y
+        q = msg.pose.pose.orientation
+        siny = 2.0 * (q.w * q.z + q.x * q.y)
+        cosy = 1.0 - 2.0 * (q.y**2 + q.z**2)
+        self.robot_theta = math.atan2(siny, cosy)
+
+    def cmd_vel_cb(self, msg: Twist):
+        self.vx     = msg.linear.x
+        self.vtheta = msg.angular.z
+
+    # ── Main sensor update ────────────────────────────────────────────────────
+    def sensor_tick(self):
+        self._publish_lidar()
+        self._publish_imu()
+        self._detect_objects()
+
+    # ── LiDAR ─────────────────────────────────────────────────────────────────
+    def _publish_lidar(self):
+        now = self.get_clock().now()
         scan = LaserScan()
-        scan.header.stamp = self.get_clock().now().to_msg()
+        scan.header.stamp    = now.to_msg()
         scan.header.frame_id = 'lidar_link'
-        
-        # LIDAR parameters
-        scan.angle_min = -math.pi
-        scan.angle_max = math.pi
-        scan.angle_increment = math.pi / 180  # 1 degree resolution
-        scan.scan_time = 0.1
-        scan.range_min = 0.1
-        scan.range_max = 10.0
-        
-        num_readings = int((scan.angle_max - scan.angle_min) / scan.angle_increment) + 1
-        scan.ranges = []
-        scan.intensities = []
-        
-        for i in range(num_readings):
-            angle = scan.angle_min + i * scan.angle_increment
-            
-            # Calculate distance to nearest object in this direction
-            min_distance = scan.range_max
-            
-            for obj in self.objects:
-                # Calculate relative position of object from robot
-                rel_x = obj['pos'][0] - self.robot_x
-                rel_y = obj['pos'][1] - self.robot_y
-                
-                # Transform to robot's coordinate frame
-                cos_theta = math.cos(-self.robot_theta)
-                sin_theta = math.sin(-self.robot_theta)
-                robot_rel_x = rel_x * cos_theta - rel_y * sin_theta
-                robot_rel_y = rel_x * sin_theta + rel_y * cos_theta
-                
-                # Calculate angle and distance to object
-                obj_angle = math.atan2(robot_rel_y, robot_rel_x)
-                obj_distance = math.sqrt(robot_rel_x**2 + robot_rel_y**2)
-                
-                # Check if object is in this laser beam
-                angle_diff = abs(self.normalize_angle(angle - obj_angle))
-                if angle_diff < scan.angle_increment:
-                    # Add some noise to make it realistic
-                    noisy_distance = obj_distance + random.gauss(0, 0.01)
-                    min_distance = min(min_distance, noisy_distance)
-            
-            # Add some random noise to empty space readings
-            if min_distance >= scan.range_max:
-                min_distance = scan.range_max + random.gauss(0, 0.1)
-            
-            scan.ranges.append(max(scan.range_min, min(scan.range_max, min_distance)))
-            scan.intensities.append(100.0 if min_distance < scan.range_max else 0.0)
-        
+
+        scan.angle_min      = -math.pi
+        scan.angle_max      =  math.pi
+        scan.angle_increment = math.pi / 180.0  # 1° resolution = 361 beams
+        scan.scan_time      = 0.1
+        scan.range_min      = 0.12
+        scan.range_max      = 12.0
+
+        num_beams = int((scan.angle_max - scan.angle_min) / scan.angle_increment) + 1
+
+        all_obstacles = (
+            [{'pos': o['pos'][:2], 'r': o['r']} for o in self.scene_objects] +
+            self.walls
+        )
+
+        ranges = []
+        for i in range(num_beams):
+            beam_angle_world = (scan.angle_min + i * scan.angle_increment) + self.robot_theta
+            min_dist = scan.range_max
+
+            for obs in all_obstacles:
+                dx = obs['pos'][0] - self.robot_x
+                dy = obs['pos'][1] - self.robot_y
+                obj_dist  = math.sqrt(dx**2 + dy**2)
+                obj_angle = math.atan2(dy, dx)
+
+                angle_diff = abs(self._norm_angle(beam_angle_world - obj_angle))
+
+                # Apparent half-angle subtended by the obstacle
+                if obj_dist < 0.01:
+                    continue
+                half_angle = math.atan2(obs['r'], obj_dist)
+
+                if angle_diff <= half_angle:
+                    hit = obj_dist - obs['r'] + random.gauss(0, 0.015)
+                    min_dist = min(min_dist, max(scan.range_min, hit))
+
+            # Clamp and add noise to empty readings
+            if min_dist >= scan.range_max:
+                min_dist = scan.range_max - abs(random.gauss(0, 0.05))
+
+            ranges.append(float(clamp(min_dist, scan.range_min, scan.range_max)))
+
+        scan.ranges      = ranges
+        scan.intensities = [100.0 if r < scan.range_max - 0.1 else 0.0 for r in ranges]
         self.lidar_pub.publish(scan)
-    
-    def detect_objects(self):
-        """Detect objects and publish their positions"""
-        for obj in self.objects:
-            # Calculate relative position from robot
-            rel_x = obj['pos'][0] - self.robot_x
-            rel_y = obj['pos'][1] - self.robot_y
-            distance = math.sqrt(rel_x**2 + rel_y**2)
-            
-            # Detect objects within 2 meters
-            if distance < 2.0 and not obj['detected']:
-                # Publish detected object position
-                point = Point()
-                point.x = obj['pos'][0]
-                point.y = obj['pos'][1]
-                point.z = obj['pos'][2]
-                
-                self.object_pub.publish(point)
+
+    # ── IMU ───────────────────────────────────────────────────────────────────
+    def _publish_imu(self):
+        now = self.get_clock().now()
+        dt  = (now - self.last_imu_t).nanoseconds / 1e9
+        self.last_imu_t = now
+
+        imu = Imu()
+        imu.header.stamp    = now.to_msg()
+        imu.header.frame_id = 'imu_link'
+
+        # Linear acceleration: a = Δv/dt (forward = x)
+        ax = (self.vx - self.prev_vx) / max(dt, 0.001) if dt > 0 else 0.0
+        ax += random.gauss(0, 0.02)   # sensor noise
+
+        imu.linear_acceleration = Vector3(
+            x=ax + random.gauss(0, 0.01),
+            y=random.gauss(0, 0.01),
+            z=9.81 + random.gauss(0, 0.02)   # gravity
+        )
+
+        # Angular velocity
+        imu.angular_velocity = Vector3(
+            x=random.gauss(0, 0.005),
+            y=random.gauss(0, 0.005),
+            z=self.vtheta + random.gauss(0, 0.01)
+        )
+
+        # Orientation from yaw (orientation filter simplified)
+        q = euler_to_quat(0.0, 0.0, self.robot_theta)
+        imu.orientation.x = q[0]
+        imu.orientation.y = q[1]
+        imu.orientation.z = q[2]
+        imu.orientation.w = q[3]
+
+        # Covariances (diagonal, reasonable values)
+        imu.orientation_covariance[0]         = 0.0025
+        imu.orientation_covariance[4]         = 0.0025
+        imu.orientation_covariance[8]         = 0.0025
+        imu.angular_velocity_covariance[0]    = 0.00025
+        imu.angular_velocity_covariance[4]    = 0.00025
+        imu.angular_velocity_covariance[8]    = 0.00025
+        imu.linear_acceleration_covariance[0] = 0.004
+        imu.linear_acceleration_covariance[4] = 0.004
+        imu.linear_acceleration_covariance[8] = 0.004
+
+        self.prev_vx     = self.vx
+        self.prev_vtheta = self.vtheta
+        self.imu_pub.publish(imu)
+
+    # ── Object detection ──────────────────────────────────────────────────────
+    def _detect_objects(self):
+        for obj in self.scene_objects:
+            dx = obj['pos'][0] - self.robot_x
+            dy = obj['pos'][1] - self.robot_y
+            dist = math.sqrt(dx**2 + dy**2)
+
+            if dist < 2.5 and not obj['detected']:
+                p = Point()
+                p.x = obj['pos'][0]
+                p.y = obj['pos'][1]
+                p.z = obj['pos'][2]
+                self.object_pub.publish(p)
                 obj['detected'] = True
-                
-                self.get_logger().info(f'Detected object at ({point.x:.2f}, {point.y:.2f}, {point.z:.2f})')
-    
-    def normalize_angle(self, angle):
-        """Normalize angle to [-pi, pi]"""
-        while angle > math.pi:
-            angle -= 2 * math.pi
-        while angle < -math.pi:
-            angle += 2 * math.pi
-        return angle
-    
-    def update_robot_position(self, x, y, theta):
-        """Update robot position (could be subscribed from odometry)"""
-        self.robot_x = x
-        self.robot_y = y
-        self.robot_theta = theta
+                self.get_logger().info(
+                    f'🎯 Object #{obj["id"]} detected at '
+                    f'({p.x:.1f}, {p.y:.1f}, {p.z:.1f}) — dist={dist:.2f}m')
+
+            # Reset detection if robot moves away (> 5 m), allowing re-pick in demo
+            if dist > 5.0 and obj['detected']:
+                obj['detected'] = False
+
+    # ── Utility ───────────────────────────────────────────────────────────────
+    @staticmethod
+    def _norm_angle(a):
+        while a >  math.pi: a -= 2 * math.pi
+        while a < -math.pi: a += 2 * math.pi
+        return a
+
+
+# ── Module-level helpers ───────────────────────────────────────────────────────
+def clamp(v, lo, hi):
+    return max(lo, min(hi, v))
+
+
+def euler_to_quat(roll, pitch, yaw):
+    cr, sr = math.cos(roll/2),  math.sin(roll/2)
+    cp, sp = math.cos(pitch/2), math.sin(pitch/2)
+    cy, sy = math.cos(yaw/2),   math.sin(yaw/2)
+    return [
+        sr*cp*cy - cr*sp*sy,
+        cr*sp*cy + sr*cp*sy,
+        cr*cp*sy - sr*sp*cy,
+        cr*cp*cy + sr*sp*sy,
+    ]
+
 
 def main(args=None):
     rclpy.init(args=args)
     node = SensorSimulatorNode()
-    
-    # Simulate robot movement for testing
-    def simulate_movement():
-        # Simple circular motion for testing
-        time_elapsed = node.get_clock().now().nanoseconds / 1e9
-        node.update_robot_position(
-            math.cos(time_elapsed * 0.1) * 2.0,
-            math.sin(time_elapsed * 0.1) * 2.0,
-            time_elapsed * 0.1
-        )
-    
-    # Create timer for position updates
-    node.create_timer(0.1, simulate_movement)
-    
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

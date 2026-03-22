@@ -39,8 +39,8 @@ services:
       bash -c "
         source /opt/ros/humble/setup.bash &&
         source /root/ros2_ws/install/setup.bash &&
-        sleep 5 &&
-        rviz2 -d /root/ros2_ws/install/my_robot/share/my_robot/rviz/urdf_config.rviz
+        sleep 8 &&
+        rviz2 -d /root/ros2_ws/src/my_robot/rviz/urdf_config.rviz
       "
 
   gazebo:
@@ -63,3 +63,5 @@ services:
         sleep 8 &&
         gazebo --verbose
       "
+
+
