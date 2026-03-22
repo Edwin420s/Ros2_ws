@@ -32,8 +32,32 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Node for arm control
+    node_arm_controller = Node(
+        package='my_robot',
+        executable='arm_controller.py',
+        output='screen'
+    )
+
+    # Node for sensor simulation
+    node_sensor_simulator = Node(
+        package='my_robot',
+        executable='sensor_simulator.py',
+        output='screen'
+    )
+
+    # Node for pick control logic
+    node_pick_controller = Node(
+        package='my_robot',
+        executable='pick_controller.py',
+        output='screen'
+    )
+
     return LaunchDescription([
         node_robot_state_publisher,
         node_joint_state_publisher,
-        node_fake_odom
+        node_fake_odom,
+        node_arm_controller,
+        node_sensor_simulator,
+        node_pick_controller
     ])

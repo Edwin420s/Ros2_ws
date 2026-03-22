@@ -1,117 +1,131 @@
-# ECE2318 Robotics Assignment - ROS 2 Robot Simulation
+# ECE2318 Robotics Assignment — ROS 2 Robot Simulation (v2)
 
-This repository contains a ROS 2 workspace (`ros2_ws`) for the ECE2318 Robotics Assignment. It implements a complete ROS 2 simulation environment of a custom robot utilizing URDF, Launch Files, Nodes, Topics, and RViz2 visualization, fully containerized using Docker.
+A complete ROS 2 simulation of a custom 4-wheel robot with a 4-DOF robotic arm (IK-controlled), working LiDAR + IMU sensors, and autonomous pick-and-place behaviour. Fully containerised with Docker.
 
 ---
 
-## 🚀 How to Run the Simulation from Scratch
+## 🚀 Quick Start
 
-The following steps detail exactly how to build and launch the robot simulation from start to finish, fulfilling all requirements of the assignment.
-
-### 1. Host Screen Setup (Fedora)
-Before launching Docker, you must allow the container to project its graphical interface (RViz2) to your host screen. Open a regular Fedora terminal and run:
 ```bash
-sudo dnf install xhost -y
+# 1. Allow Docker to display GUI windows on your Fedora host
+sudo dnf install xorg-x11-server-utils -y
 xhost +local:docker
-```
-*You should see a message stating "non-network local connections being added to access control list".*
 
-### 2. Enter the Docker Simulation Environment
-Start the ROS 2 Humble container and link your workspace folder (`~/ros2_ws`) to the container's `/root/ros2_ws` folder.
-```bash
-docker run -it --rm \
---net=host \
---env="DISPLAY=$DISPLAY" \
---volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
--v ~/ros2_ws:/root/ros2_ws \
-osrf/ros:humble-desktop
-```
-*(Note: A `docker-compose.yml` and `run.sh` are also available in this repository to automate this process).*
-
-### 3. Build & Source the Workspace (Terminal 1)
-Inside the Docker container, clear any old builds and compile your `my_robot` assignment package:
-```bash
-cd /root/ros2_ws
-rm -rf build install log
-colcon build --packages-select my_robot
-source install/setup.bash
-```
-Now launch the Robot State Publisher and Joint State Publisher to bring the robot to life:
-```bash
-ros2 launch my_robot rsp.launch.py
+# 2. Launch everything (build + all nodes + RViz2 + Gazebo)
+bash run.sh
 ```
 
-### 4. Launch RViz2 (Terminal 2 - The "Eyes")
-Open a **new terminal tab** on your real computer, find your running container ID (`docker ps`), and attach to it:
-```bash
-docker exec -it <your_container_id> bash
+That's it. `docker compose up --build` starts:
+
+| Service    | What it does |
+|------------|--------------|
+| `ros_base` | Builds workspace, then launches ALL ROS nodes via `rsp.launch.py` |
+| `rviz2`    | Opens RViz2 with LiDAR scan, TF, odometry trail, and robot model |
+| `gazebo`   | Starts Gazebo simulation |
+
+---
+
+## 🧠 Architecture — Nodes & Topics
+
 ```
-Once inside, activate your ROS 2 environment and run the visualizer:
-```bash
-source /opt/ros/humble/setup.bash
-source /root/ros2_ws/install/setup.bash
-export DISPLAY=:0
-rviz2
+walker.py       →  /cmd_vel  →  fake_odom.py  →  /odom  →  sensor_simulator.py
+                               /wheel_velocities          →  /detected_object
+                               /joint_states (wheels)     →  arm_controller.py
+                                                          →  /joint_states (arm)
+pick_controller.py ← /scan, /odom, /detected_object
+pick_controller.py → /cmd_vel
 ```
 
-**Inside RViz2:**
-1. On the left panel under **Global Options**, change **Fixed Frame** from `map` to `odom` (or `base_link`).
-2. Click the **Add** button at the bottom left and select **RobotModel**. Your robot will appear!
-3. Click **Add** again and select **TF** to visualize the axes of your sensors and joints.
+### Nodes
 
-### 5. Move the Robot (Terminal 3 - The "Brain")
-To fulfill the motion programming requirement, open a **third terminal**, enter the container (`docker exec -it <id> bash`), and run your custom publisher node:
-```bash
-source /opt/ros/humble/setup.bash
-source /root/ros2_ws/install/setup.bash
-ros2 run my_robot walker.py
-```
-*(The robot will now start driving forward in RViz2, publishing at 0.5 m/s!)*
+| Node | Description |
+|------|-------------|
+| `robot_state_publisher` | Publishes robot TF tree from URDF |
+| `fake_odom` | 50 Hz dead-reckoning odometry + visual wheel spin |
+| `walker` | 4-state motion machine (EXPLORE/TURN/SPIRAL/PAUSE) with smooth velocity ramping |
+| `sensor_simulator` | Ray-cast LiDAR, IMU with noise + covariance, object detection |
+| `arm_controller` | 8-state smooth IK pick-and-place (non-blocking, 20 Hz) |
+| `pick_controller` | Navigation to detected objects with obstacle avoidance |
 
-### 6. Changing Speed Dynamically (Parameters Requirement)
-You can change the robot's configuration in real time without stopping the script! Try updating its linear speed to 1.5 m/s:
+---
+
+## 🤖 Robot Design
+
+- **Base**: 3×2×0.9 m chassis, full `<inertial>` and `<collision>` tags
+- **4 Wheels**: `continuous` joints with `<dynamics damping/friction>` — spin visually
+- **Sensors**:
+  - LiDAR cylinder on front-top
+  - Camera box + lens cylinder on front face
+  - IMU chip on top of chassis
+- **Arm**: 4-DOF (base yaw + shoulder + elbow + wrist), all `revolute` with limits
+- **Gripper**: 2 prismatic fingers + yellow fingertip spheres
+
+---
+
+## 🎮 Motion Behaviour (`walker.py`)
+
+Walker runs a 4-state machine at 20 Hz:
+
+1. **EXPLORE** — forward drive with gentle sinusoidal steering sway
+2. **TURN** — banked turn (alternating left/right each cycle)
+3. **SPIRAL** — widening arc to sweep new area
+4. **PAUSE** — smooth deceleration stop before next state
+
+Velocity is **ramped** (no instant jumps) — feels like a real vehicle.
+
+### Change speed dynamically
 ```bash
-ros2 param set /robot_walker linear_speed 1.5
+ros2 param set /robot_walker linear_speed 1.0
 ```
 
 ---
 
-## 📚 Core ROS 2 Elements Implemented (Report Theory)
+## 🦾 Arm Pick-and-Place (`arm_controller.py`)
 
-### 1. Nodes
-Nodes are individual, independent executable processes that perform computation.
-- **`robot_state_publisher`**: Reads the URDF file and publishes the 3D transforms (`/tf`) of the robot links to the ROS 2 network.
-- **`joint_state_publisher`**: Publishes the state of the robot's joints to the `/joint_states` topic.
-- **`robot_walker` (`walker.py`)**: A uniquely created script that acts as a custom Python node. It continuously calculates and publishes velocity commands.
-- **`fake_odom` (`fake_odom.py`)**: Translates motion velocity commands into `odom` TF transforms out to RViz2.
+8-state cycle (runs forever):
 
-### 2. Topics & Messages
-Topics are named communication buses over which nodes exchange data using a Publisher/Subscriber model.
-- **Motion Control Topic (`/cmd_vel`)**: The specific topic used by the `walker.py` node to send motion commands.
-- **Messages (`geometry_msgs/msg/Twist`)**: The exact data structure sent over the `/cmd_vel` topic. It contains linear (`x`, `y`, `z`) and angular (`x`, `y`, `z`) velocity components. In this project, `msg.linear.x` sets the forward speed, and `msg.angular.z` sets the turning speed.
+`HOME → OPEN_GRIPPER → REACH_APPROACH → REACH_OBJECT → CLOSE_GRIPPER → LIFT → DEPOSIT → HOME`
 
-### 3. Publishers & Subscribers
-- **Publisher**: The `walker.py` script acts as the Publisher, actively sending velocity data out to the network.
-- **Subscriber**: The simulation environment (and `fake_odom.py`) acts as the Subscriber, receiving the data to move the robot dynamically.
-
-### 4. Parameters
-Parameters are configurable node settings that can be changed dynamically at runtime without modifying the underlying code.
-- **`linear_speed`**: Defined inside `walker.py`, this allows the user or launch file to externalize and adjust the forward velocity of the robot on the fly. 
-
-### 5. Packages and Launch Files
-- **Packages**: Directories used to organize software and dependencies (e.g., the `my_robot` folder). They were initialized via `ros2 pkg create --build-type ament_cmake my_robot`.
-- **Launch Files**: Scripts (like `rsp.launch.py`) used to automate starting and configuring multiple nodes sequentially rather than manually invoking them one by one.
-
-### 6. Services vs. Actions
-*As defined for the assignment report:*
-- **Services**: Used for quick, synchronous "Request-Response" tasks (e.g., "turn on the camera" or "read the current sensor value"). The calling node waits until the service completes.
-- **Actions**: Used for long-running, asynchronous, goal-oriented tasks that provide continuous feedback (e.g., "navigate to the kitchen", "rotate 360 degrees", "25% complete") and can be canceled mid-execution.
+- Uses 2-link planar **inverse kinematics** (law of cosines)
+- Joint angles **interpolated smoothly** at 20 Hz — no blocking sleep()
+- Falls back to internal demo objects when no `/detected_object` received
 
 ---
 
-## Deliverables Checklist
-- [x] **Source Code**: Prepared in `~/ros2_ws/src/my_robot`.
-- [x] **Visualization**: Visualized the generic shape and LiDAR sensor using the `RobotModel` and `TF` displays in RViz2.
-- [x] **Motion Control**: Implemented using `/cmd_vel` via a publisher node.
-- [x] **Parameters**: Configured `linear_speed` dynamically.
-- [x] **Execution**: Completely containerized via Docker and automated builds.
+## 📡 Sensors (`sensor_simulator.py`)
+
+| Topic | Type | Details |
+|-------|------|---------|
+| `/scan` | `LaserScan` | 360°, 1° resolution, ray-cast against obstacles + walls |
+| `/imu` | `Imu` | Acceleration, angular velocity, orientation + Gaussian noise + covariance |
+| `/detected_object` | `Point` | Published when robot is within 2.5 m of an object |
+
+---
+
+## 🧭 Navigation (`pick_controller.py`)
+
+5-state nav machine:
+
+1. **SEARCHING** — spin to scan
+2. **APPROACHING** — proportional P-control to drive toward target
+3. **WAITING** — hand off to arm (6 s)
+4. **RETURNING** — drive back to origin
+5. **IDLE** → back to SEARCHING
+
+Obstacle avoidance via ±25° front LiDAR sector check.
+
+---
+
+## 📋 Deliverables Checklist
+
+- [x] URDF with `<inertial>`, `<collision>`, `<dynamics>`, `<limit>` on all joints  
+- [x] LiDAR, Camera, IMU sensor links  
+- [x] Robotic arm — 4-DOF + 2-finger prismatic gripper  
+- [x] Smooth motion with velocity ramping and state machine  
+- [x] Wheel joints visually spinning in RViz  
+- [x] Working LiDAR scan (`/scan`) visible in RViz as orange spheres  
+- [x] IMU data published with covariance  
+- [x] Autonomous pick-and-place with IK  
+- [x] Obstacle avoidance during navigation  
+- [x] Dynamic parameter `linear_speed`  
+- [x] Fully containerised with Docker Compose  

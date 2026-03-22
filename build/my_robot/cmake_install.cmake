@@ -54,6 +54,9 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/my_robot" TYPE PROGRAM FILES
     "/root/ros2_ws/src/my_robot/src/walker.py"
     "/root/ros2_ws/src/my_robot/src/fake_odom.py"
+    "/root/ros2_ws/src/my_robot/src/arm_controller.py"
+    "/root/ros2_ws/src/my_robot/src/sensor_simulator.py"
+    "/root/ros2_ws/src/my_robot/src/pick_controller.py"
     )
 endif()
 
