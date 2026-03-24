@@ -62,6 +62,8 @@ class FakeOdomNode(Node):
     def update(self):
         now = self.get_clock().now()
         dt  = (now - self.last_time).nanoseconds / 1e9
+        if dt <= 0:
+            return  # Skip invalid time steps
         self.last_time = now
 
         # Integrate pose (unicycle model)

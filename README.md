@@ -14,7 +14,10 @@ xhost +local:docker
 # 2. Launch everything (build + all nodes + RViz2 + Gazebo)
 bash run.sh
 ```
+```
 
+./run.sh
+```
 That's it. `docker compose up --build` starts:
 
 | Service    | What it does |

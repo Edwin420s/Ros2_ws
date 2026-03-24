@@ -58,6 +58,20 @@ def generate_launch_description():
         output='screen'
     )
 
+    # ── Services ───────────────────────────────────────────────────────────────
+    node_services = Node(
+        package='my_robot',
+        executable='robot_services.py',
+        output='screen'
+    )
+
+    # ── Actions ────────────────────────────────────────────────────────────────
+    node_actions = Node(
+        package='my_robot',
+        executable='robot_actions.py',
+        output='screen'
+    )
+
     return LaunchDescription([
         node_rsp,
         node_fake_odom,
@@ -65,4 +79,6 @@ def generate_launch_description():
         node_pick_controller,
         node_arm,
         node_sensors,
+        node_services,
+        node_actions,
     ])

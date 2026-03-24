@@ -11,9 +11,10 @@ Tracks real robot position via /odom subscription.
 """
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import LaserScan, Imu
+from sensor_msgs.msg import LaserScan, Imu, CameraInfo, Image
 from geometry_msgs.msg import Point, Twist, Vector3
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Header
 import math
 import random
 
@@ -26,6 +27,8 @@ class SensorSimulatorNode(Node):
         self.lidar_pub  = self.create_publisher(LaserScan, '/scan',             10)
         self.imu_pub    = self.create_publisher(Imu,       '/imu',              10)
         self.object_pub = self.create_publisher(Point,     '/detected_object',  10)
+        self.camera_info_pub = self.create_publisher(CameraInfo, '/camera_info', 10)
+        self.camera_image_pub = self.create_publisher(Image, '/camera_image', 10)
 
         # ── Subscribers ────────────────────────────────────────────────────
         self.create_subscription(Odometry, '/odom',    self.odom_cb,    10)
@@ -62,7 +65,8 @@ class SensorSimulatorNode(Node):
 
         # ── 10 Hz sensor tick ──────────────────────────────────────────────
         self.create_timer(0.1, self.sensor_tick)
-        self.get_logger().info('📡 Sensor simulator started (LiDAR + IMU + Object detection)')
+        self.camera_frame_count = 0
+        self.get_logger().info('📡 Sensor simulator started (LiDAR + IMU + Camera + Object detection)')
 
     # ── Callbacks ─────────────────────────────────────────────────────────────
     def odom_cb(self, msg: Odometry):
@@ -81,6 +85,7 @@ class SensorSimulatorNode(Node):
     def sensor_tick(self):
         self._publish_lidar()
         self._publish_imu()
+        self._publish_camera()
         self._detect_objects()
 
     # ── LiDAR ─────────────────────────────────────────────────────────────────
@@ -184,6 +189,65 @@ class SensorSimulatorNode(Node):
         self.prev_vx     = self.vx
         self.prev_vtheta = self.vtheta
         self.imu_pub.publish(imu)
+
+    # ── Camera ────────────────────────────────────────────────────────────────
+    def _publish_camera(self):
+        now = self.get_clock().now()
+        self.camera_frame_count += 1
+        
+        # Camera Info (simulated 640x480 RGB camera)
+        cam_info = CameraInfo()
+        cam_info.header.stamp = now.to_msg()
+        cam_info.header.frame_id = 'camera_link'
+        cam_info.width = 640
+        cam_info.height = 480
+        cam_info.distortion_model = 'plumb_bob'
+        cam_info.d = [0.0, 0.0, 0.0, 0.0, 0.0]
+        
+        # Camera intrinsic matrix (simulated focal length)
+        fx = fy = 500.0  # pixels
+        cx = cam_info.width / 2.0
+        cy = cam_info.height / 2.0
+        cam_info.k = [fx, 0.0, cx, 0.0, fy, cy, 0.0, 0.0, 1.0]
+        
+        # Camera projection matrix
+        cam_info.p = [fx, 0.0, cx, 0.0, 0.0, fy, cy, 0.0, 0.0, 0.0, 1.0, 0.0]
+        
+        self.camera_info_pub.publish(cam_info)
+        
+        # Simulated camera image (every 5 frames to reduce bandwidth)
+        if self.camera_frame_count % 5 == 0:
+            img = Image()
+            img.header.stamp = now.to_msg()
+            img.header.frame_id = 'camera_link'
+            img.width = 640
+            img.height = 480
+            img.encoding = 'rgb8'
+            img.step = img.width * 3  # 3 bytes per pixel
+            
+            # Create simple test pattern (gradient + objects)
+            img_data = []
+            for y in range(img.height):
+                for x in range(img.width):
+                    # Create gradient background
+                    r = int(255 * (x / img.width))
+                    g = int(255 * (y / img.height))
+                    b = 128
+                    
+                    # Add simulated object detection (bright spots)
+                    for obj in self.scene_objects:
+                        obj_x = int(img.width/2 + obj['pos'][0] * 50)
+                        obj_y = int(img.height/2 - obj['pos'][1] * 50)
+                        dist = math.sqrt((x - obj_x)**2 + (y - obj_y)**2)
+                        if dist < 20:  # Object appears as bright circle
+                            r = min(255, r + 100)
+                            g = min(255, g + 100)
+                            b = min(255, b + 100)
+                    
+                    img_data.extend([r, g, b])
+            
+            img.data = bytes(img_data)
+            self.camera_image_pub.publish(img)
 
     # ── Object detection ──────────────────────────────────────────────────────
     def _detect_objects(self):
