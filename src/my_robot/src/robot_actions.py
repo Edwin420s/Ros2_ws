@@ -9,18 +9,13 @@ Provides actions for:
 """
 import rclpy
 from rclpy.node import Node
-from rclpy.action import ActionServer, CancelResponse, GoalResponse
-from geometry_msgs.msg import Twist, PoseStamped
+from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from std_msgs.msg import String
 import math
 import time
 import threading
-
-# Custom action interfaces (using standard ones for simplicity)
-from nav2_msgs.action import NavigateToPose
-from example_interfaces.action import Fibonacci
 
 
 class NavigateToPoseAction:
@@ -61,7 +56,7 @@ class RobotActionsNode(Node):
         self.front_clear = True
         
         # Action execution flags
-        self Navigate_active = False
+        self.navigate_active = False
         self.pick_active = False
         self.explore_active = False
         
@@ -92,7 +87,7 @@ class RobotActionsNode(Node):
     
     def execute_navigate_to_pose(self, goal_x, goal_y):
         """Execute navigation to pose"""
-        if not self.Navigate_active:
+        if not self.navigate_active:
             return
         
         dx = goal_x - self.current_x
@@ -100,7 +95,7 @@ class RobotActionsNode(Node):
         distance = math.sqrt(dx**2 + dy**2)
         
         if distance < 0.3:  # Reached goal
-            self.Navigate_active = False
+            self.navigate_active = False
             status_msg = String()
             status_msg.data = f'Navigation complete - reached ({goal_x:.1f}, {goal_y:.1f})'
             self.status_pub.publish(status_msg)
@@ -195,7 +190,7 @@ class RobotActionsNode(Node):
     
     def execute_actions(self):
         """Main action execution loop"""
-        if self.Navigate_active:
+        if self.navigate_active:
             # Would get goal from action server
             goal_x, goal_y = 2.0, 2.0  # Example goal
             self.execute_navigate_to_pose(goal_x, goal_y)
@@ -208,7 +203,7 @@ class RobotActionsNode(Node):
     
     def start_navigate_to_pose(self, x, y):
         """Start navigation action"""
-        self.Navigate_active = True
+        self.navigate_active = True
         status_msg = String()
         status_msg.data = f'Starting navigation to ({x:.1f}, {y:.1f})'
         self.status_pub.publish(status_msg)
@@ -232,7 +227,7 @@ class RobotActionsNode(Node):
     
     def stop_all_actions(self):
         """Stop all active actions"""
-        self.Navigate_active = False
+        self.navigate_active = False
         self.pick_active = False
         self.explore_active = False
         

@@ -1,0 +1,103 @@
+[0.000000] (-) TimerEvent: {}
+[0.000318] (my_robot) JobQueued: {'identifier': 'my_robot', 'dependencies': OrderedDict()}
+[0.001184] (turtlebot3_simulation) JobQueued: {'identifier': 'turtlebot3_simulation', 'dependencies': OrderedDict()}
+[0.001250] (my_robot) JobStarted: {'identifier': 'my_robot'}
+[0.011125] (turtlebot3_simulation) JobStarted: {'identifier': 'turtlebot3_simulation'}
+[0.015840] (my_robot) JobProgress: {'identifier': 'my_robot', 'progress': 'cmake'}
+[0.016734] (my_robot) Command: {'cmd': ['/usr/bin/cmake', '/home/skywalker/ros2_ws/src/my_robot', '-DCMAKE_INSTALL_PREFIX=/home/skywalker/ros2_ws/install/my_robot'], 'cwd': '/home/skywalker/ros2_ws/build/my_robot', 'env': OrderedDict({'SHELL': '/bin/bash', 'COLORTERM': 'truecolor', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/home/skywalker/.windsurf/extensions/ms-python.debugpy-2025.18.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-1b6384386339d7d3.txt', 'HISTCONTROL': 'ignoredups', 'XDG_MENU_PREFIX': 'gnome-', 'TERM_PROGRAM_VERSION': '1.108.2', 'QT_IM_MODULES': 'wayland;ibus', 'HISTSIZE': '1000', 'HOSTNAME': 'fedora', 'SSH_AUTH_SOCK': '/run/user/1000/gcr/ssh', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'XMODIFIERS': '@im=ibus', 'DESKTOP_SESSION': 'gnome', 'NO_AT_BRIDGE': '1', 'GPG_TTY': 'not a tty', 'EDITOR': '/usr/bin/nano', 'PWD': '/home/skywalker/ros2_ws/build/my_robot', 'LOGNAME': 'skywalker', 'XDG_SESSION_DESKTOP': 'gnome', 'XDG_SESSION_TYPE': 'wayland', 'SYSTEMD_EXEC_PID': '3872', 'BUNDLED_DEBUGPY_PATH': '/home/skywalker/.windsurf/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/libs/debugpy', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.KL85M3', 'VSCODE_GIT_ASKPASS_NODE': '/usr/share/windsurf/windsurf', 'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'GDM_LANG': 'en_US.UTF-8', 'HOME': '/home/skywalker', 'USERNAME': 'skywalker', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'GNOME', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@wayland.service/memory.pressure', 'PYTHONSTARTUP': '/home/skywalker/.config/Windsurf/User/workspaceStorage/ba2a18d57539d8d6e356af6775f1f398/ms-python.python/pythonrc.py', 'WAYLAND_DISPLAY': 'wayland-0', 'WINDSURF_CASCADE_TERMINAL': '1', 'GIT_ASKPASS': '/usr/share/windsurf/resources/app/extensions/git/dist/askpass.sh', 'INVOCATION_ID': '9e13f29950a040d78ed148f5af4a2f7e', 'MANAGERPID': '3635', 'CHROME_DESKTOP': 'windsurf.desktop', 'GJS_DEBUG_OUTPUT': 'stderr', 'MOZ_GMP_PATH': '/usr/lib64/mozilla/plugins/gmp-gmpopenh264/system-installed', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'GNOME_SETUP_DISPLAY': ':1', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'XDG_SESSION_CLASS': 'user', 'COLCON': '1', 'TERM': 'xterm-256color', 'PYTHON_BASIC_REPL': '1', 'LESSOPEN': '||/usr/bin/lesspipe.sh %s', 'USER': 'skywalker', 'GIT_PAGER': 'cat', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-3d38e82ed8.sock', 'DISPLAY': ':0', 'SHLVL': '1', 'PAGER': 'cat', 'TURTLEBOT3_MODEL': 'burger', 'QT_IM_MODULE': 'ibus', 'MANAGERPIDFDID': '3636', 'FC_FONTATIONS': '1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DEBUGINFOD_URLS': 'ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore', 'DEBUGINFOD_IMA_CERT_PATH': '/etc/keys/ima:', 'WINDSURF_CASCADE_TERMINAL_KIND': 'inherit', 'VSCODE_GIT_ASKPASS_MAIN': '/usr/share/windsurf/resources/app/extensions/git/dist/askpass-main.js', 'JOURNAL_STREAM': '9:31289', 'XDG_DATA_DIRS': '/home/skywalker/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'GDK_BACKEND': 'wayland', 'PATH': '/home/skywalker/.cargo/bin:/home/skywalker/.local/bin:/usr/local/bin:/usr/bin:/var/lib/snapd/snap/bin:/home/skywalker/.windsurf/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts', 'GDMSESSION': 'gnome', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'MAIL': '/var/spool/mail/skywalker', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '26861', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/windsurf.desktop', 'OLDPWD': '/home/skywalker/ros2!', 'TERM_PROGRAM': 'vscode', '_': '/usr/bin/env'}), 'shell': False}
+[0.024957] (turtlebot3_simulation) JobProgress: {'identifier': 'turtlebot3_simulation', 'progress': 'cmake'}
+[0.026327] (turtlebot3_simulation) Command: {'cmd': ['/usr/bin/cmake', '/home/skywalker/ros2_ws/src/turtlebot3_simulation', '-DCMAKE_INSTALL_PREFIX=/home/skywalker/ros2_ws/install/turtlebot3_simulation'], 'cwd': '/home/skywalker/ros2_ws/build/turtlebot3_simulation', 'env': OrderedDict({'SHELL': '/bin/bash', 'COLORTERM': 'truecolor', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/home/skywalker/.windsurf/extensions/ms-python.debugpy-2025.18.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-1b6384386339d7d3.txt', 'HISTCONTROL': 'ignoredups', 'XDG_MENU_PREFIX': 'gnome-', 'TERM_PROGRAM_VERSION': '1.108.2', 'QT_IM_MODULES': 'wayland;ibus', 'HISTSIZE': '1000', 'HOSTNAME': 'fedora', 'SSH_AUTH_SOCK': '/run/user/1000/gcr/ssh', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'XMODIFIERS': '@im=ibus', 'DESKTOP_SESSION': 'gnome', 'NO_AT_BRIDGE': '1', 'GPG_TTY': 'not a tty', 'EDITOR': '/usr/bin/nano', 'PWD': '/home/skywalker/ros2_ws/build/turtlebot3_simulation', 'LOGNAME': 'skywalker', 'XDG_SESSION_DESKTOP': 'gnome', 'XDG_SESSION_TYPE': 'wayland', 'SYSTEMD_EXEC_PID': '3872', 'BUNDLED_DEBUGPY_PATH': '/home/skywalker/.windsurf/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/libs/debugpy', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.KL85M3', 'VSCODE_GIT_ASKPASS_NODE': '/usr/share/windsurf/windsurf', 'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'GDM_LANG': 'en_US.UTF-8', 'HOME': '/home/skywalker', 'USERNAME': 'skywalker', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'GNOME', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@wayland.service/memory.pressure', 'PYTHONSTARTUP': '/home/skywalker/.config/Windsurf/User/workspaceStorage/ba2a18d57539d8d6e356af6775f1f398/ms-python.python/pythonrc.py', 'WAYLAND_DISPLAY': 'wayland-0', 'WINDSURF_CASCADE_TERMINAL': '1', 'GIT_ASKPASS': '/usr/share/windsurf/resources/app/extensions/git/dist/askpass.sh', 'INVOCATION_ID': '9e13f29950a040d78ed148f5af4a2f7e', 'MANAGERPID': '3635', 'CHROME_DESKTOP': 'windsurf.desktop', 'GJS_DEBUG_OUTPUT': 'stderr', 'MOZ_GMP_PATH': '/usr/lib64/mozilla/plugins/gmp-gmpopenh264/system-installed', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'GNOME_SETUP_DISPLAY': ':1', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'XDG_SESSION_CLASS': 'user', 'COLCON': '1', 'TERM': 'xterm-256color', 'PYTHON_BASIC_REPL': '1', 'LESSOPEN': '||/usr/bin/lesspipe.sh %s', 'USER': 'skywalker', 'GIT_PAGER': 'cat', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-3d38e82ed8.sock', 'DISPLAY': ':0', 'SHLVL': '1', 'PAGER': 'cat', 'TURTLEBOT3_MODEL': 'burger', 'QT_IM_MODULE': 'ibus', 'MANAGERPIDFDID': '3636', 'FC_FONTATIONS': '1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DEBUGINFOD_URLS': 'ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore', 'DEBUGINFOD_IMA_CERT_PATH': '/etc/keys/ima:', 'WINDSURF_CASCADE_TERMINAL_KIND': 'inherit', 'VSCODE_GIT_ASKPASS_MAIN': '/usr/share/windsurf/resources/app/extensions/git/dist/askpass-main.js', 'JOURNAL_STREAM': '9:31289', 'XDG_DATA_DIRS': '/home/skywalker/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'GDK_BACKEND': 'wayland', 'PATH': '/home/skywalker/.cargo/bin:/home/skywalker/.local/bin:/usr/local/bin:/usr/bin:/var/lib/snapd/snap/bin:/home/skywalker/.windsurf/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts', 'GDMSESSION': 'gnome', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'MAIL': '/var/spool/mail/skywalker', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '26861', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/windsurf.desktop', 'OLDPWD': '/home/skywalker/ros2!', 'TERM_PROGRAM': 'vscode', '_': '/usr/bin/env'}), 'shell': False}
+[0.036720] (my_robot) StderrLine: {'line': b'\x1b[0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n'}
+[0.037135] (my_robot) StderrLine: {'line': b'  Compatibility with CMake < 3.10 will be removed from a future version of\n'}
+[0.037417] (my_robot) StderrLine: {'line': b'  CMake.\n'}
+[0.037661] (my_robot) StderrLine: {'line': b'\n'}
+[0.037868] (my_robot) StderrLine: {'line': b'  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n'}
+[0.038091] (my_robot) StderrLine: {'line': b'  to tell CMake that the project requires at least <min> but has been updated\n'}
+[0.038301] (my_robot) StderrLine: {'line': b'  to work with policies introduced by <max> or earlier.\n'}
+[0.038503] (my_robot) StderrLine: {'line': b'\n'}
+[0.038713] (my_robot) StderrLine: {'line': b'\x1b[0m\n'}
+[0.043290] (turtlebot3_simulation) StderrLine: {'line': b'\x1b[0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n'}
+[0.043760] (turtlebot3_simulation) StderrLine: {'line': b'  Compatibility with CMake < 3.10 will be removed from a future version of\n'}
+[0.044041] (turtlebot3_simulation) StderrLine: {'line': b'  CMake.\n'}
+[0.044309] (turtlebot3_simulation) StderrLine: {'line': b'\n'}
+[0.044545] (turtlebot3_simulation) StderrLine: {'line': b'  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n'}
+[0.044765] (turtlebot3_simulation) StderrLine: {'line': b'  to tell CMake that the project requires at least <min> but has been updated\n'}
+[0.044970] (turtlebot3_simulation) StderrLine: {'line': b'  to work with policies introduced by <max> or earlier.\n'}
+[0.045519] (turtlebot3_simulation) StderrLine: {'line': b'\n'}
+[0.045746] (turtlebot3_simulation) StderrLine: {'line': b'\x1b[0m\n'}
+[0.099538] (-) TimerEvent: {}
+[0.199926] (-) TimerEvent: {}
+[0.300549] (-) TimerEvent: {}
+[0.313855] (my_robot) StdoutLine: {'line': b'-- The C compiler identification is GNU 15.2.1\n'}
+[0.314350] (turtlebot3_simulation) StdoutLine: {'line': b'-- The C compiler identification is GNU 15.2.1\n'}
+[0.400635] (-) TimerEvent: {}
+[0.500927] (-) TimerEvent: {}
+[0.601450] (-) TimerEvent: {}
+[0.634325] (turtlebot3_simulation) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 15.2.1\n'}
+[0.634727] (my_robot) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 15.2.1\n'}
+[0.660383] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.660865] (my_robot) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.701583] (-) TimerEvent: {}
+[0.783035] (my_robot) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.783258] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.801141] (turtlebot3_simulation) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.801664] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.801759] (-) TimerEvent: {}
+[0.802423] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.805227] (my_robot) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.805556] (my_robot) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.806032] (my_robot) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.817277] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.820739] (my_robot) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.901909] (-) TimerEvent: {}
+[0.984249] (my_robot) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.001847] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.002376] (-) TimerEvent: {}
+[1.031173] (my_robot) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.032322] (my_robot) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.034564] (my_robot) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.057085] (turtlebot3_simulation) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.058067] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.059870] (turtlebot3_simulation) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.071013] (my_robot) StderrLine: {'line': b'\x1b[31mCMake Error at CMakeLists.txt:9 (find_package):\n'}
+[1.071559] (my_robot) StderrLine: {'line': b'  By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project\n'}
+[1.071875] (my_robot) StderrLine: {'line': b'  has asked CMake to find a package configuration file provided by\n'}
+[1.072194] (my_robot) StderrLine: {'line': b'  "ament_cmake", but CMake did not find one.\n'}
+[1.072477] (my_robot) StderrLine: {'line': b'\n'}
+[1.072740] (my_robot) StderrLine: {'line': b'  Could not find a package configuration file provided by "ament_cmake" with\n'}
+[1.072993] (my_robot) StderrLine: {'line': b'  any of the following names:\n'}
+[1.073245] (my_robot) StderrLine: {'line': b'\n'}
+[1.073407] (my_robot) StderrLine: {'line': b'    ament_cmakeConfig.cmake\n'}
+[1.073599] (my_robot) StderrLine: {'line': b'    ament_cmake-config.cmake\n'}
+[1.073769] (my_robot) StderrLine: {'line': b'\n'}
+[1.073921] (my_robot) StderrLine: {'line': b'  Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set\n'}
+[1.074235] (my_robot) StderrLine: {'line': b'  "ament_cmake_DIR" to a directory containing one of the above files.  If\n'}
+[1.074503] (my_robot) StderrLine: {'line': b'  "ament_cmake" provides a separate development package or SDK, be sure it\n'}
+[1.074766] (my_robot) StderrLine: {'line': b'  has been installed.\n'}
+[1.075023] (my_robot) StderrLine: {'line': b'\n'}
+[1.075327] (my_robot) StderrLine: {'line': b'\x1b[0m\n'}
+[1.075491] (my_robot) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[1.082144] (my_robot) CommandEnded: {'returncode': 1}
+[1.087616] (turtlebot3_simulation) StderrLine: {'line': b'\x1b[31mCMake Error at CMakeLists.txt:9 (find_package):\n'}
+[1.088040] (turtlebot3_simulation) StderrLine: {'line': b'  By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project\n'}
+[1.088348] (turtlebot3_simulation) StderrLine: {'line': b'  has asked CMake to find a package configuration file provided by\n'}
+[1.088613] (turtlebot3_simulation) StderrLine: {'line': b'  "ament_cmake", but CMake did not find one.\n'}
+[1.088877] (turtlebot3_simulation) StderrLine: {'line': b'\n'}
+[1.089162] (turtlebot3_simulation) StderrLine: {'line': b'  Could not find a package configuration file provided by "ament_cmake" with\n'}
+[1.089422] (turtlebot3_simulation) StderrLine: {'line': b'  any of the following names:\n'}
+[1.089681] (turtlebot3_simulation) StderrLine: {'line': b'\n'}
+[1.089937] (turtlebot3_simulation) StderrLine: {'line': b'    ament_cmakeConfig.cmake\n'}
+[1.090212] (turtlebot3_simulation) StderrLine: {'line': b'    ament_cmake-config.cmake\n'}
+[1.090472] (turtlebot3_simulation) StderrLine: {'line': b'\n'}
+[1.090783] (turtlebot3_simulation) StderrLine: {'line': b'  Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set\n'}
+[1.091108] (turtlebot3_simulation) StderrLine: {'line': b'  "ament_cmake_DIR" to a directory containing one of the above files.  If\n'}
+[1.091399] (turtlebot3_simulation) StderrLine: {'line': b'  "ament_cmake" provides a separate development package or SDK, be sure it\n'}
+[1.091661] (turtlebot3_simulation) StderrLine: {'line': b'  has been installed.\n'}
+[1.091923] (turtlebot3_simulation) StderrLine: {'line': b'\n'}
+[1.092198] (turtlebot3_simulation) StderrLine: {'line': b'\x1b[0m\n'}
+[1.092464] (turtlebot3_simulation) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[1.096710] (turtlebot3_simulation) CommandEnded: {'returncode': 1}
+[1.102522] (-) TimerEvent: {}
+[1.137225] (my_robot) JobEnded: {'identifier': 'my_robot', 'rc': 1}
+[1.139024] (turtlebot3_simulation) JobEnded: {'identifier': 'turtlebot3_simulation', 'rc': 'SIGINT'}
+[1.150129] (-) EventReactorShutdown: {}

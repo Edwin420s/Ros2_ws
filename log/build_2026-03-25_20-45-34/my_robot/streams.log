@@ -1,0 +1,31 @@
+[0.044s] Invoking command in '/home/skywalker/ros2_ws/build/my_robot': DEBUGINFOD_URLS=ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore _=/usr/bin/env /usr/bin/cmake /home/skywalker/ros2_ws/src/my_robot -DCMAKE_INSTALL_PREFIX=/home/skywalker/ros2_ws/install/my_robot
+[0.200s] [0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+[0.200s]   Compatibility with CMake < 3.10 will be removed from a future version of
+[0.200s]   CMake.
+[0.201s] 
+[0.201s]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+[0.201s]   to tell CMake that the project requires at least <min> but has been updated
+[0.202s]   to work with policies introduced by <max> or earlier.
+[0.202s] 
+[0.202s] [0m
+[0.259s] -- Found ament_cmake: 2.5.2 (/home/skywalker/Downloads/sys/ros2/glnxa64/ros2/share/ament_cmake/cmake)
+[0.760s] -- Found Python3: /usr/bin/python3 (found version "3.14.3") found components: Interpreter
+[1.056s] [31mCMake Error at CMakeLists.txt:10 (find_package):
+[1.057s]   By not providing "Findrclpy.cmake" in CMAKE_MODULE_PATH this project has
+[1.057s]   asked CMake to find a package configuration file provided by "rclpy", but
+[1.057s]   CMake did not find one.
+[1.057s] 
+[1.057s]   Could not find a package configuration file provided by "rclpy" with any of
+[1.058s]   the following names:
+[1.058s] 
+[1.058s]     rclpyConfig.cmake
+[1.058s]     rclpy-config.cmake
+[1.058s] 
+[1.059s]   Add the installation prefix of "rclpy" to CMAKE_PREFIX_PATH or set
+[1.059s]   "rclpy_DIR" to a directory containing one of the above files.  If "rclpy"
+[1.059s]   provides a separate development package or SDK, be sure it has been
+[1.059s]   installed.
+[1.060s] 
+[1.060s] [0m
+[1.060s] -- Configuring incomplete, errors occurred!
+[1.062s] Invoked command in '/home/skywalker/ros2_ws/build/my_robot' returned '1': DEBUGINFOD_URLS=ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore _=/usr/bin/env /usr/bin/cmake /home/skywalker/ros2_ws/src/my_robot -DCMAKE_INSTALL_PREFIX=/home/skywalker/ros2_ws/install/my_robot

@@ -1,0 +1,22 @@
+[0.034s] Invoking command in '/home/skywalker/ros2_ws/build/turtlebot3_simulation': DEBUGINFOD_URLS=ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore _=/usr/bin/env /usr/bin/cmake /home/skywalker/ros2_ws/src/turtlebot3_simulation -DCMAKE_INSTALL_PREFIX=/home/skywalker/ros2_ws/install/turtlebot3_simulation
+[0.180s] [0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+[0.181s]   Compatibility with CMake < 3.10 will be removed from a future version of
+[0.181s]   CMake.
+[0.182s] 
+[0.182s]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+[0.182s]   to tell CMake that the project requires at least <min> but has been updated
+[0.182s]   to work with policies introduced by <max> or earlier.
+[0.182s] 
+[0.183s] [0m
+[0.238s] -- Found ament_cmake: 2.5.2 (/home/skywalker/Downloads/sys/ros2/glnxa64/ros2/share/ament_cmake/cmake)
+[0.777s] -- Found Python3: /usr/bin/python3 (found version "3.14.3") found components: Interpreter
+[1.051s] -- Found ament_lint_auto: 0.17.1 (/home/skywalker/Downloads/sys/ros2/glnxa64/ros2/share/ament_lint_auto/cmake)
+[1.299s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.303s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.303s] -- Configured 'flake8' exclude dirs and/or files: 
+[1.305s] -- Added test 'lint_cmake' to check CMake code style
+[1.306s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.309s] -- Added test 'xmllint' to check XML markup files
+[1.312s] -- Configuring done (1.1s)
+[1.333s] -- Generating done (0.0s)
+[1.336s] -- Build files have been written to: /home/skywalker/ros2_ws/build/turtlebot3_simulation

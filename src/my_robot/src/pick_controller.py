@@ -104,7 +104,6 @@ class PickControllerNode(Node):
         if self.control_mode == 'idle':
             self._transition('SEARCHING')
 
-        # ── Control loop ──────────────────────────────────────────────────────────
     def loop(self):
         self.state_t += 1
         

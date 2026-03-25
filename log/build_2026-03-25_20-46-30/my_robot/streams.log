@@ -1,0 +1,30 @@
+[0.027s] Invoking command in '/home/skywalker/ros2_ws/build/my_robot': DEBUGINFOD_URLS=ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore _=/usr/bin/env /usr/bin/cmake /home/skywalker/ros2_ws/src/my_robot -DCMAKE_INSTALL_PREFIX=/home/skywalker/ros2_ws/install/my_robot
+[0.076s] [0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+[0.076s]   Compatibility with CMake < 3.10 will be removed from a future version of
+[0.076s]   CMake.
+[0.076s] 
+[0.077s]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+[0.077s]   to tell CMake that the project requires at least <min> but has been updated
+[0.077s]   to work with policies introduced by <max> or earlier.
+[0.077s] 
+[0.077s] [0m
+[0.091s] -- Found ament_cmake: 2.5.2 (/home/skywalker/Downloads/sys/ros2/glnxa64/ros2/share/ament_cmake/cmake)
+[0.614s] [31mCMake Error at CMakeLists.txt:10 (find_package):
+[0.614s]   By not providing "Findrclpy.cmake" in CMAKE_MODULE_PATH this project has
+[0.614s]   asked CMake to find a package configuration file provided by "rclpy", but
+[0.614s]   CMake did not find one.
+[0.615s] 
+[0.615s]   Could not find a package configuration file provided by "rclpy" with any of
+[0.615s]   the following names:
+[0.615s] 
+[0.616s]     rclpyConfig.cmake
+[0.616s]     rclpy-config.cmake
+[0.616s] 
+[0.616s]   Add the installation prefix of "rclpy" to CMAKE_PREFIX_PATH or set
+[0.617s]   "rclpy_DIR" to a directory containing one of the above files.  If "rclpy"
+[0.617s]   provides a separate development package or SDK, be sure it has been
+[0.617s]   installed.
+[0.617s] 
+[0.618s] [0m
+[0.618s] -- Configuring incomplete, errors occurred!
+[0.620s] Invoked command in '/home/skywalker/ros2_ws/build/my_robot' returned '1': DEBUGINFOD_URLS=ima:enforcing https://debuginfod.fedoraproject.org/ ima:ignore _=/usr/bin/env /usr/bin/cmake /home/skywalker/ros2_ws/src/my_robot -DCMAKE_INSTALL_PREFIX=/home/skywalker/ros2_ws/install/my_robot

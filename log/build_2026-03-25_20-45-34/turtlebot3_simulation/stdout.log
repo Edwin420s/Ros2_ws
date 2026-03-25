@@ -1,0 +1,12 @@
+-- Found ament_cmake: 2.5.2 (/home/skywalker/Downloads/sys/ros2/glnxa64/ros2/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.14.3") found components: Interpreter
+-- Found ament_lint_auto: 0.17.1 (/home/skywalker/Downloads/sys/ros2/glnxa64/ros2/share/ament_lint_auto/cmake)
+-- Added test 'copyright' to check source files copyright and LICENSE
+-- Added test 'flake8' to check Python code syntax and style conventions
+-- Configured 'flake8' exclude dirs and/or files: 
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done (1.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/skywalker/ros2_ws/build/turtlebot3_simulation

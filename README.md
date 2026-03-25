@@ -1,134 +1,162 @@
-# ECE2318 Robotics Assignment — ROS 2 Robot Simulation (v2)
+# ROS2 Mobile Robot Simulation
 
-A complete ROS 2 simulation of a custom 4-wheel robot with a 4-DOF robotic arm (IK-controlled), working LiDAR + IMU sensors, and autonomous pick-and-place behaviour. Fully containerised with Docker.
+A professional ROS2 simulation package featuring a 4-wheel mobile robot with a 4-DOF robotic arm, advanced sensors, and autonomous navigation capabilities.
 
----
+## Overview
 
-## 🚀 Quick Start
+This project implements a complete robotic system with:
+- **Mobile Platform**: 4-wheel differential drive robot
+- **Manipulator**: 4-DOF robotic arm with inverse kinematics
+- **Sensors**: LiDAR, IMU, and Camera simulation
+- **Autonomy**: Pick-and-place functionality with obstacle avoidance
+- **Services & Actions**: Full ROS2 communication interface
+
+## Quick Start
+
+### Prerequisites
+- ROS2 Humble
+- Docker (optional, for containerized deployment)
+- Python 3.10+
+
+### Installation
 
 ```bash
-# 1. Allow Docker to display GUI windows on your Fedora host
-sudo dnf install xorg-x11-server-utils -y
-xhost +local:docker
+# Clone and build
+cd ~/ros2_ws
+colcon build --packages-select my_robot
+source install/setup.bash
 
-# 2. Launch everything (build + all nodes + RViz2 + Gazebo)
+# Launch simulation
+ros2 launch my_robot rsp.launch.py
+```
+
+### Docker Deployment
+
+```bash
+# Launch with GUI support
+xhost +local:docker
 bash run.sh
 ```
-```
 
-./run.sh
-```
-That's it. `docker compose up --build` starts:
+## Architecture
 
-| Service    | What it does |
-|------------|--------------|
-| `ros_base` | Builds workspace, then launches ALL ROS nodes via `rsp.launch.py` |
-| `rviz2`    | Opens RViz2 with LiDAR scan, TF, odometry trail, and robot model |
-| `gazebo`   | Starts Gazebo simulation |
+### Core Components
 
----
+| Component | Description |
+|-----------|-------------|
+| **Walker Node** | 4-state motion machine (EXPLORE/TURN/SPIRAL/PAUSE) |
+| **Odometry Node** | Dead-reckoning with visual wheel feedback |
+| **Sensor Simulator** | Ray-cast LiDAR, IMU with noise, object detection |
+| **Arm Controller** | IK-based pick-and-place with smooth trajectories |
+| **Navigation** | Obstacle-aware approach to detected objects |
+| **Services** | Mode control, status queries, emergency stop |
+| **Actions** | Long-running tasks with feedback |
 
-## 🧠 Architecture — Nodes & Topics
+### Key Topics
 
-```
-walker.py       →  /cmd_vel  →  fake_odom.py  →  /odom  →  sensor_simulator.py
-                               /wheel_velocities          →  /detected_object
-                               /joint_states (wheels)     →  arm_controller.py
-                                                          →  /joint_states (arm)
-pick_controller.py ← /scan, /odom, /detected_object
-pick_controller.py → /cmd_vel
-```
+- `/cmd_vel` - Motion control (geometry_msgs/Twist)
+- `/odom` - Robot odometry (nav_msgs/Odometry)
+- `/scan` - 360° LiDAR data (sensor_msgs/LaserScan)
+- `/imu` - IMU readings (sensor_msgs/Imu)
+- `/joint_states` - All joint positions (sensor_msgs/JointState)
+- `/detected_object` - Object detection (geometry_msgs/Point)
 
-### Nodes
+## Features
 
-| Node | Description |
-|------|-------------|
-| `robot_state_publisher` | Publishes robot TF tree from URDF |
-| `fake_odom` | 50 Hz dead-reckoning odometry + visual wheel spin |
-| `walker` | 4-state motion machine (EXPLORE/TURN/SPIRAL/PAUSE) with smooth velocity ramping |
-| `sensor_simulator` | Ray-cast LiDAR, IMU with noise + covariance, object detection |
-| `arm_controller` | 8-state smooth IK pick-and-place (non-blocking, 20 Hz) |
-| `pick_controller` | Navigation to detected objects with obstacle avoidance |
-
----
-
-## 🤖 Robot Design
-
-- **Base**: 3×2×0.9 m chassis, full `<inertial>` and `<collision>` tags
-- **4 Wheels**: `continuous` joints with `<dynamics damping/friction>` — spin visually
-- **Sensors**:
-  - LiDAR cylinder on front-top
-  - Camera box + lens cylinder on front face
-  - IMU chip on top of chassis
-- **Arm**: 4-DOF (base yaw + shoulder + elbow + wrist), all `revolute` with limits
-- **Gripper**: 2 prismatic fingers + yellow fingertip spheres
-
----
-
-## 🎮 Motion Behaviour (`walker.py`)
-
-Walker runs a 4-state machine at 20 Hz:
-
-1. **EXPLORE** — forward drive with gentle sinusoidal steering sway
-2. **TURN** — banked turn (alternating left/right each cycle)
-3. **SPIRAL** — widening arc to sweep new area
-4. **PAUSE** — smooth deceleration stop before next state
-
-Velocity is **ramped** (no instant jumps) — feels like a real vehicle.
-
-### Change speed dynamically
+### Motion Control
+- Smooth velocity ramping for realistic movement
+- Dynamic parameter adjustment:
 ```bash
 ros2 param set /robot_walker linear_speed 1.0
 ```
 
----
+### Services
+- `/set_robot_mode` - Toggle manual/autonomous operation
+- `/get_robot_status` - System status query
+- `/trigger_pick` - Manual pick sequence
+- `/emergency_stop` - Immediate motion halt
 
-## 🦾 Arm Pick-and-Place (`arm_controller.py`)
+### Actions
+- `/navigate_to_pose` - Point-to-point navigation
+- `/pick_and_place` - Complete manipulation sequence
+- `/explore_area` - Systematic area coverage
 
-8-state cycle (runs forever):
+## Robot Configuration
 
-`HOME → OPEN_GRIPPER → REACH_APPROACH → REACH_OBJECT → CLOSE_GRIPPER → LIFT → DEPOSIT → HOME`
+### Physical Specifications
+- **Chassis**: 3×2×0.9m with inertial properties
+- **Wheels**: 4× continuous joints with dynamics
+- **Arm**: 4-DOF (base yaw, shoulder, elbow, wrist)
+- **Gripper**: 2-finger prismatic mechanism
+- **Sensors**: LiDAR (360°), Camera, IMU
 
-- Uses 2-link planar **inverse kinematics** (law of cosines)
-- Joint angles **interpolated smoothly** at 20 Hz — no blocking sleep()
-- Falls back to internal demo objects when no `/detected_object` received
+### URDF Features
+- Complete collision geometry
+- Accurate inertial properties
+- Joint limits and dynamics
+- Visual mesh representations
 
----
+## Development
 
-## 📡 Sensors (`sensor_simulator.py`)
+### Package Structure
+```
+my_robot/
+├── src/           # Python nodes
+├── launch/        # Launch configurations
+├── urdf/          # Robot model
+├── rviz/          # Visualization configs
+├── config/        # Parameter files
+└── CMakeLists.txt # Build configuration
+```
 
-| Topic | Type | Details |
-|-------|------|---------|
-| `/scan` | `LaserScan` | 360°, 1° resolution, ray-cast against obstacles + walls |
-| `/imu` | `Imu` | Acceleration, angular velocity, orientation + Gaussian noise + covariance |
-| `/detected_object` | `Point` | Published when robot is within 2.5 m of an object |
+### Adding New Nodes
+1. Create Python script in `src/`
+2. Add to `CMakeLists.txt` install section
+3. Update `package.xml` if new dependencies
+4. Include in launch file as needed
 
----
+## Testing
 
-## 🧭 Navigation (`pick_controller.py`)
+### Unit Tests
+```bash
+colcon test --packages-select my_robot
+```
 
-5-state nav machine:
+### Integration Tests
+```bash
+# Test all services
+ros2 run my_robot demo_services_actions.py
 
-1. **SEARCHING** — spin to scan
-2. **APPROACHING** — proportional P-control to drive toward target
-3. **WAITING** — hand off to arm (6 s)
-4. **RETURNING** — drive back to origin
-5. **IDLE** → back to SEARCHING
+# Monitor system
+ros2 topic echo /robot_status
+```
 
-Obstacle avoidance via ±25° front LiDAR sector check.
+## Troubleshooting
 
----
+### Common Issues
+- **Build failures**: Ensure all dependencies in `package.xml`
+- **TF errors**: Wait 2-3 seconds after launch for stabilization
+- **Service unavailable**: Check node startup with `ros2 node list`
 
-## 📋 Deliverables Checklist
+### Debug Commands
+```bash
+# System overview
+ros2 node list
+ros2 topic list
+ros2 service list
 
-- [x] URDF with `<inertial>`, `<collision>`, `<dynamics>`, `<limit>` on all joints  
-- [x] LiDAR, Camera, IMU sensor links  
-- [x] Robotic arm — 4-DOF + 2-finger prismatic gripper  
-- [x] Smooth motion with velocity ramping and state machine  
-- [x] Wheel joints visually spinning in RViz  
-- [x] Working LiDAR scan (`/scan`) visible in RViz as orange spheres  
-- [x] IMU data published with covariance  
-- [x] Autonomous pick-and-place with IK  
-- [x] Obstacle avoidance during navigation  
-- [x] Dynamic parameter `linear_speed`  
-- [x] Fully containerised with Docker Compose  
+# Real-time monitoring
+ros2 topic hz /scan
+ros2 topic echo /cmd_vel
+```
+
+## License
+
+Apache License 2.0
+
+## Contributing
+
+1. Fork the repository
+2. Create feature branch
+3. Make changes with tests
+4. Submit pull request  

@@ -1,0 +1,28 @@
+[0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+[0m
+-- Found ament_cmake: 2.5.2 (/home/skywalker/Downloads/sys/ros2/glnxa64/ros2/share/ament_cmake/cmake)
+[31mCMake Error at CMakeLists.txt:10 (find_package):
+  By not providing "Findrclpy.cmake" in CMAKE_MODULE_PATH this project has
+  asked CMake to find a package configuration file provided by "rclpy", but
+  CMake did not find one.
+
+  Could not find a package configuration file provided by "rclpy" with any of
+  the following names:
+
+    rclpyConfig.cmake
+    rclpy-config.cmake
+
+  Add the installation prefix of "rclpy" to CMAKE_PREFIX_PATH or set
+  "rclpy_DIR" to a directory containing one of the above files.  If "rclpy"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+
+[0m
+-- Configuring incomplete, errors occurred!

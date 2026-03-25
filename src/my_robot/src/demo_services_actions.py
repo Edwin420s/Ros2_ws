@@ -41,107 +41,121 @@ class DemoServicesActionsNode(Node):
         """Run complete demo of all services and actions"""
         self.get_logger().info('=== Starting ROS 2 Services & Actions Demo ===')
         
-        # 1. Get initial status
-        self.get_logger().info('\n1. Getting robot status...')
-        self.call_get_status()
-        time.sleep(2)
-        
-        # 2. Set manual mode
-        self.get_logger().info('\n2. Setting robot to MANUAL mode...')
-        self.call_set_mode(True)
-        time.sleep(2)
-        
-        # 3. Test direct velocity control
-        self.get_logger().info('\n3. Testing direct velocity control (manual mode)...')
-        self.test_manual_control()
-        time.sleep(3)
-        
-        # 4. Set autonomous mode
-        self.get_logger().info('\n4. Setting robot to AUTONOMOUS mode...')
-        self.call_set_mode(False)
-        time.sleep(2)
-        
-        # 5. Trigger pick sequence
-        self.get_logger().info('\n5. Triggering manual pick sequence...')
-        self.call_trigger_pick()
-        time.sleep(10)
-        
-        # 6. Get final status
-        self.get_logger().info('\n6. Getting final robot status...')
-        self.call_get_status()
-        time.sleep(2)
-        
-        # 7. Emergency stop demonstration
-        self.get_logger().info('\n7. Testing emergency stop...')
-        self.test_emergency_stop()
-        
-        self.get_logger().info('\n=== Demo Complete ===')
-        self.get_logger().info('All ROS 2 services and actions demonstrated successfully!')
+        # Use timers for non-blocking demo sequence
+        self.demo_step = 0
+        self.demo_timer = self.create_timer(2.0, self.demo_step_callback)
+        self.demo_step_callback()  # Start immediately
     
-    def call_set_mode(self, manual_mode):
-        """Call set_robot_mode service"""
+    def demo_step_callback(self):
+        """Execute demo steps sequentially"""
+        if self.demo_step == 0:
+            # 1. Get initial status
+            self.get_logger().info('\n1. Getting robot status...')
+            self.call_get_status_async()
+        elif self.demo_step == 1:
+            # 2. Set manual mode
+            self.get_logger().info('\n2. Setting robot to MANUAL mode...')
+            self.call_set_mode_async(True)
+        elif self.demo_step == 2:
+            # 3. Test direct velocity control
+            self.get_logger().info('\n3. Testing direct velocity control (manual mode)...')
+            self.test_manual_control()
+        elif self.demo_step == 3:
+            # 4. Set autonomous mode
+            self.get_logger().info('\n4. Setting robot to AUTONOMOUS mode...')
+            self.call_set_mode_async(False)
+        elif self.demo_step == 4:
+            # 5. Trigger pick sequence
+            self.get_logger().info('\n5. Triggering manual pick sequence...')
+            self.call_trigger_pick_async()
+        elif self.demo_step == 5:
+            # 6. Get final status
+            self.get_logger().info('\n6. Getting final robot status...')
+            self.call_get_status_async()
+        elif self.demo_step == 6:
+            # 7. Emergency stop demonstration
+            self.get_logger().info('\n7. Testing emergency stop...')
+            self.test_emergency_stop()
+        elif self.demo_step >= 7:
+            self.get_logger().info('\n=== Demo Complete ===')
+            self.get_logger().info('All ROS 2 services and actions demonstrated successfully!')
+            self.demo_timer.destroy()
+            return
+        
+        self.demo_step += 1
+    
+    def call_set_mode_async(self, manual_mode):
+        """Call set_robot_mode service asynchronously"""
         request = SetBool.Request()
         request.data = manual_mode
         
         future = self.set_mode_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
-        
-        if future.result() is not None:
+        future.add_done_callback(self.set_mode_callback)
+    
+    def set_mode_callback(self, future):
+        """Callback for set_mode service"""
+        try:
             response = future.result()
             if response.success:
                 self.get_logger().info(f'✅ Mode change successful: {response.message}')
             else:
                 self.get_logger().warn(f'❌ Mode change failed: {response.message}')
-        else:
-            self.get_logger().error('❌ Service call failed')
+        except Exception as e:
+            self.get_logger().error(f'❌ Service call failed: {e}')
     
-    def call_get_status(self):
-        """Call get_robot_status service"""
+    def call_get_status_async(self):
+        """Call get_robot_status service asynchronously"""
         request = Trigger.Request()
         
         future = self.get_status_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
-        
-        if future.result() is not None:
+        future.add_done_callback(self.get_status_callback)
+    
+    def get_status_callback(self, future):
+        """Callback for get_status service"""
+        try:
             response = future.result()
             if response.success:
                 self.get_logger().info(f'✅ Status: {response.message}')
             else:
                 self.get_logger().warn(f'❌ Status check failed: {response.message}')
-        else:
-            self.get_logger().error('❌ Service call failed')
+        except Exception as e:
+            self.get_logger().error(f'❌ Service call failed: {e}')
     
-    def call_trigger_pick(self):
-        """Call trigger_pick service"""
+    def call_trigger_pick_async(self):
+        """Call trigger_pick service asynchronously"""
         request = Trigger.Request()
         
         future = self.trigger_pick_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
-        
-        if future.result() is not None:
+        future.add_done_callback(self.trigger_pick_callback)
+    
+    def trigger_pick_callback(self, future):
+        """Callback for trigger_pick service"""
+        try:
             response = future.result()
             if response.success:
                 self.get_logger().info(f'✅ Pick triggered: {response.message}')
             else:
                 self.get_logger().warn(f'❌ Pick trigger failed: {response.message}')
-        else:
-            self.get_logger().error('❌ Service call failed')
+        except Exception as e:
+            self.get_logger().error(f'❌ Service call failed: {e}')
     
-    def call_emergency_stop(self):
-        """Call emergency_stop service"""
+    def call_emergency_stop_async(self):
+        """Call emergency_stop service asynchronously"""
         request = Trigger.Request()
         
         future = self.emergency_stop_client.call_async(request)
-        rclpy.spin_until_future_complete(self, future)
-        
-        if future.result() is not None:
+        future.add_done_callback(self.emergency_stop_callback)
+    
+    def emergency_stop_callback(self, future):
+        """Callback for emergency_stop service"""
+        try:
             response = future.result()
             if response.success:
                 self.get_logger().info(f'🛑 Emergency stop: {response.message}')
             else:
                 self.get_logger().warn(f'❌ Emergency stop failed: {response.message}')
-        else:
-            self.get_logger().error('❌ Service call failed')
+        except Exception as e:
+            self.get_logger().error(f'❌ Service call failed: {e}')
     
     def test_manual_control(self):
         """Test direct velocity control in manual mode"""
@@ -175,7 +189,7 @@ class DemoServicesActionsNode(Node):
         
         # Emergency stop
         self.get_logger().info('Activating emergency stop!')
-        self.call_emergency_stop()
+        self.call_emergency_stop_async()
         
         time.sleep(2)
         self.get_logger().info('Emergency stop test complete')
@@ -186,7 +200,7 @@ def main(args=None):
     
     try:
         node = DemoServicesActionsNode()
-        rclpy.spin_once(node)  # Run once to complete demo
+        rclpy.spin(node)
     except KeyboardInterrupt:
         pass
     finally:
