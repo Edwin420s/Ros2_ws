@@ -1,0 +1,1 @@
+controller_manager:example_interfaces:gazebo_plugins:gazebo_ros:geometry_msgs:joint_state_broadcaster:joint_state_publisher:nav_msgs:rclpy:robot_localization:robot_state_publisher:rviz2:sensor_msgs:std_msgs:std_srvs:tf2_ros:xacro

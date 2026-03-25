@@ -1,0 +1,51 @@
+[0.000000] (-) TimerEvent: {}
+[0.000441] (-) JobUnselected: {'identifier': 'my_robot'}
+[0.001168] (turtlebot3_simulation) JobQueued: {'identifier': 'turtlebot3_simulation', 'dependencies': OrderedDict()}
+[0.001210] (turtlebot3_simulation) JobStarted: {'identifier': 'turtlebot3_simulation'}
+[0.013410] (turtlebot3_simulation) JobProgress: {'identifier': 'turtlebot3_simulation', 'progress': 'cmake'}
+[0.015514] (turtlebot3_simulation) JobProgress: {'identifier': 'turtlebot3_simulation', 'progress': 'build'}
+[0.015583] (turtlebot3_simulation) Command: {'cmd': ['/usr/bin/cmake', '--build', '/root/ros2_ws/build/turtlebot3_simulation', '--', '-j8', '-l8'], 'cwd': '/root/ros2_ws/build/turtlebot3_simulation', 'env': OrderedDict([('HOSTNAME', 'fedora'), ('SHLVL', '1'), ('LIBGL_ALWAYS_SOFTWARE', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/root'), ('OLDPWD', '/root/ros2_ws'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('QT_X11_NO_MITSHM', '1'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('PWD', '/root/ros2_ws/build/turtlebot3_simulation'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.062729] (turtlebot3_simulation) CommandEnded: {'returncode': 0}
+[0.063704] (turtlebot3_simulation) JobProgress: {'identifier': 'turtlebot3_simulation', 'progress': 'install'}
+[0.073362] (turtlebot3_simulation) Command: {'cmd': ['/usr/bin/cmake', '--install', '/root/ros2_ws/build/turtlebot3_simulation'], 'cwd': '/root/ros2_ws/build/turtlebot3_simulation', 'env': OrderedDict([('HOSTNAME', 'fedora'), ('SHLVL', '1'), ('LIBGL_ALWAYS_SOFTWARE', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/root'), ('OLDPWD', '/root/ros2_ws'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('QT_X11_NO_MITSHM', '1'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('PWD', '/root/ros2_ws/build/turtlebot3_simulation'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.084102] (turtlebot3_simulation) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[0.084504] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/velocity_controller.py\n'}
+[0.084608] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/teleop_node.py\n'}
+[0.085171] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/service_server.py\n'}
+[0.085532] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/action_server.py\n'}
+[0.085809] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation\n'}
+[0.085912] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/velocity_controller.py\n'}
+[0.086011] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/teleop_node.py\n'}
+[0.086308] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/service_server.py\n'}
+[0.086421] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/lib/turtlebot3_simulation/action_server.py\n'}
+[0.086512] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/launch\n'}
+[0.086590] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/launch/turtlebot3_simulation.launch.py\n'}
+[0.086667] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/launch/gazebo_only.launch.py\n'}
+[0.086743] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/launch/rviz_only.launch.py\n'}
+[0.086819] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/urdf\n'}
+[0.086910] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/urdf/turtlebot3_burger.urdf\n'}
+[0.087008] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/rviz\n'}
+[0.087095] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/rviz/turtlebot3_view.rviz\n'}
+[0.087172] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/config\n'}
+[0.087247] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/config/turtlebot3_params.yaml\n'}
+[0.087323] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/worlds\n'}
+[0.087398] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/worlds/empty_world.world\n'}
+[0.087473] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/ament_index/resource_index/package_run_dependencies/turtlebot3_simulation\n'}
+[0.087613] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/ament_index/resource_index/parent_prefix_path/turtlebot3_simulation\n'}
+[0.087742] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/environment/ament_prefix_path.sh\n'}
+[0.087999] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/environment/ament_prefix_path.dsv\n'}
+[0.088154] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/environment/path.sh\n'}
+[0.088722] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/environment/path.dsv\n'}
+[0.088852] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/local_setup.bash\n'}
+[0.089063] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/local_setup.sh\n'}
+[0.089244] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/local_setup.zsh\n'}
+[0.089393] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/local_setup.dsv\n'}
+[0.089587] (turtlebot3_simulation) StdoutLine: {'line': b'-- Installing: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/package.dsv\n'}
+[0.089898] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/ament_index/resource_index/packages/turtlebot3_simulation\n'}
+[0.090195] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/cmake/turtlebot3_simulationConfig.cmake\n'}
+[0.090338] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/cmake/turtlebot3_simulationConfig-version.cmake\n'}
+[0.091084] (turtlebot3_simulation) StdoutLine: {'line': b'-- Up-to-date: /root/ros2_ws/install/turtlebot3_simulation/share/turtlebot3_simulation/package.xml\n'}
+[0.091461] (turtlebot3_simulation) CommandEnded: {'returncode': 0}
+[0.100192] (-) TimerEvent: {}
+[0.117553] (turtlebot3_simulation) JobEnded: {'identifier': 'turtlebot3_simulation', 'rc': 0}
+[0.118357] (-) EventReactorShutdown: {}

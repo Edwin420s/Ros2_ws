@@ -26,9 +26,6 @@ install(PROGRAMS
   src/arm_controller.py
   src/sensor_simulator.py
   src/pick_controller.py
-  src/robot_services.py
-  src/robot_actions.py
-  src/demo_services_actions.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -72,8 +72,16 @@ def generate_launch_description():
         output='screen'
     )
 
+    # ── Master Controller ───────────────────────────────────────────────────
+    node_master = Node(
+        package='my_robot',
+        executable='robot_master_controller.py',
+        output='screen'
+    )
+
     return LaunchDescription([
         node_rsp,
+        node_master,
         node_fake_odom,
         node_walker,
         node_pick_controller,
